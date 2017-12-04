@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../vue.js"></script>
+    </head>
+    <body>
+        <!--Vue挂载的容器-->
+        <div id="app">{{ message }}</div>
+        <script>
+            //Vue示例
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    message: "欢迎Vue.js!"
+                }
+            })
+        </script>
+
+        <div id="app2" v-html="message"></div>
+        <script>
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    message: "<span style='color: red;'>欢迎Vue.js!</span>"
+                }
+            })
+        </script> 
+
+        <div id="app3">
+            我有{{ total }}个苹果，今天吃掉了{{ used }}个，还剩{{ total - used }}个苹果。
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: "#app3",
+                data: {
+                    total: 5,
+                    used: 2
+                }
+            })
+        </script> 
+    </body>
+</html>

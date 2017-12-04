@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./style/common.css">
+        <script src="../vue.js"></script>
+    </head>
+    <body>
+        <!-- v-text指令 -->
+        <div id="app" v-text="message" class="demo"></div>
+        <!--等同于下面的写法
+        <div id="app">{{ message }}</div>
+        -->
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    message: "我是v-text指令"
+                }
+            })
+        </script>
+
+        <!-- v-model指令 -->
+        <div id="app2">
+            <input v-model="message" class="demo">
+            <span>{{ message }}</span>
+        </div>
+        <script>
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    message: "我是v-model指令"
+                }
+            })
+        </script>
+
+        <!-- v-on指令 -->
+        <div id="app3" class="demo">
+            <button v-on:click="handleClick">点击我</button>
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: "#app3",
+                methods: {
+                    handleClick: function(){
+                        alert("我是点击事件");
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

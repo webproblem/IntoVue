@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./style/common.css">
+        <script src="../vue.js"></script>
+    </head>
+    <body>
+        <div id="app" class="demo">{{ message }}</div>
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    message: "我的挂载点是元素id"
+                }
+            })
+        </script>
+
+        <div class="demo v-app">{{ message }}</div>
+        <script>
+            var app2 = new Vue({
+                el: ".v-app",
+                data: {
+                    message: "我的挂载点是元素class"
+                }
+            })
+        </script>
+
+        <div class="demo" isText=true>{{ message }}</div>
+        <script>
+            var app2 = new Vue({
+                el: "[isText=true]",
+                data: {
+                    message: "我的挂载点是复合css选择器"
+                }
+            })
+        </script>
+
+        <div id="demo-wrap" class="demo">
+            <div class="demo-app">{{ message }}</div>
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: "#demo-wrap .demo-app",
+                data: {
+                    message: "我的挂载点是复合css选择器"
+                }
+            })
+        </script>
+    </body>
+</html>
