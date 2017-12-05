@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <script src="../../vue.js"></script>
+    </head>
+    <body>
+        <!-- v-text指令 -->
+        <div id="app" v-text="message" class="demo"></div>
+        <!--等同于下面的写法
+        <div id="app">{{ message }}</div>
+        -->
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    message: "我是v-text指令"
+                }
+            })
+        </script>
+
+        <!-- v-model指令 -->
+        <div id="app2">
+            <input v-model="message" class="demo">
+            <span>{{ message }}</span>
+        </div>
+        <script>
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    message: "我是v-model指令"
+                }
+            })
+        </script>
+
+        <!-- v-on指令 -->
+        <div id="app3" class="demo">
+            <button v-on:click="handleClick">我是v-on指令，点击我</button>
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: "#app3",
+                methods: {
+                    handleClick: function(){
+                        alert("我是点击事件");
+                    }
+                }
+            })
+        </script>
+
+        <!-- v-bind指令 -->
+        <div id="app4" v-bind:class="className + ' demo'">我是v-bind指令</div>
+        <script>
+            var app4 = new Vue({
+                el: "#app4",
+                data: {
+                    className: "current-index"
+                }
+            })
+        </script>
+
+        <!-- v-for指令 -->
+        <div id="app5" class="demo">
+            <div>
+                <h2>武林外传中的人物表：</h2>
+                <ul>
+                    <li v-for="item in people" :key="item.name">
+                        姓名：{{ item.name }}，
+                        性别：{{ item.sex }}，
+                        年龄：{{ item.age }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <script>
+            var app5 = new Vue({
+                el: "#app5",
+                data: {
+                    people: [
+                        {name: "佟湘玉", sex: "女", age: 28},
+                        {name: "白展堂", sex: "男", age: 26},
+                        {name: "郭芙蓉", sex: "女", age: 22},
+                        {name: "吕秀才", sex: "男", age: 22},
+                        {name: "李大嘴", sex: "男", age: 28},
+                        {name: "莫小贝", sex: "女", age: 12},
+                        {name: "邢捕头", sex: "男", age: 30},
+                        {name: "燕小六", sex: "男", age: 20},
+                        {name: "钱掌柜", sex: "男", age: 30}
+                    ]
+                }
+            })
+        </script>
+
+    </body>
+</html>
