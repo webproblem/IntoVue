@@ -1,7 +1,7 @@
 ## 从零开始入门Vue ##
 
 > ## **Hello World示例**
-首先通过Hello World示例来初步了解Vuejs。可以查看[Demo页面](../example/HelloWorld.html)。
+首先通过Hello World示例来初步了解Vuejs。可以查看[Demo页面](../example/base/HelloWorld.html)。
 
 ```
 <!DOCTYPE html>
@@ -65,7 +65,7 @@
 在Vue模板语法中，有一个很重要的一项，就是**指令**，在实际项目中，都会经常使用到Vue指令操作。Vue指令的前缀都是以`v-`开始的。现在就来讲讲Vue指令操作。
 
 ## **v-text**
-其实就是文本插值。看一个例子: 
+其实就是文本插值。看一个例子:
 ```
 <div id="app" v-text="message"></div>
 <!--等同于下面的写法
@@ -180,11 +180,36 @@ var app5 = new Vue({
 ## **v-if与v-show**
 v-if和v-show指令其实都是用来操作元素的，作用都是相同的，但是两者之间的区别是：`v-show指令只是简单的控制元素的隐藏和显示，当值是true的时候显示值为false的时候元素隐藏，只是简单的CSS状态切换；而v-if指令就有点不同，v-if指令其实是有惰性的特点，就是当值是false的时候，v-if对于的元素不会进行任何操作，但是当值为true的时候，对应的元素会渲染到DOM结构树中，改变了DOM数结构，性能就相对v-show就要差了。`具体[看文档解释](https://cn.vuejs.org/v2/guide/conditional.html)。
 
-> ## **Vue计算属性**
+> ## **Vue计算属性和观察者**
+计算属性的设计其实就是为了让模板更加的简洁。当模板内的表达式语法太复杂或者在模板中需要多次使用某个表达式，就会造成模板复杂化，所以在某些场景下，就可以使用到计算属性的操作了。看例子:
+```
+<div id="app" class="demo">
+    <input type="number" v-model="value1">
+    +
+    <input type="number" v-model="value2">
+    = {{result}}
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            value1: 0,
+            value2: 0
+        },
+        computed: {
+            result: function(){
+                return parseInt(this.value1) + parseInt(this.value2);
+            }
+        }
+    })
+</script>
+```
+当你修改两个输入框的值后，计算属性会动态的得到两个输入框拼接起来的值。    
+
+Vue使用`watvh`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。
 
 
 
 > ## **扩展**
 ## **问题1：为什么很多项目或者示例中Vue的挂载el的值都是以`#`为前缀？挂载点只能是元素id吗？**
-对于刚入手Vue的新手开发者来说，确实会感到有疑惑，在没有详尽的阅读API文档或者对API不熟的时候，可能会被误导挂载点只能是元素id。其实不然，官方API文档中已经s对其说明了，`提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标。可以是 CSS 选择器，也可以是一个 HTMLElement 实例。`  也就是说，el挂载点的值不只是id，还可以是其他的css选择器，可以查看例子Demo: [Vue挂载点的值](../example/扩展1.html)。
-
+对于刚入手Vue的新手开发者来说，确实会感到有疑惑，在没有详尽的阅读API文档或者对API不熟的时候，可能会被误导挂载点只能是元素id。其实不然，官方API文档中已经s对其说明了，`提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标。可以是 CSS 选择器，也可以是一个 HTMLElement 实例。`  也就是说，el挂载点的值不只是id，还可以是其他的css选择器，可以查看例子Demo: [Vue挂载点的值](../example/base/扩展1.html)。

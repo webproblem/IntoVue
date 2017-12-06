@@ -4,9 +4,164 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
+            html{
+                font-family: sans-serif;
+                font-size: 14px;
+            }
+            #app {
+                width: 80%;
+                margin: 30px auto;
+            }
+            #app input[type=text]{
+                height: 26px;
+                line-height: 1.5;
+                padding: 4px 7px;
+                font-size: 12px;
+                border: 1px solid #dddee1;
+                border-radius: 4px;
+                color: #495060;
+            }
+            #app input[type=text]:focus{
+                box-shadow: none;
+                outline: 0;
+                border-color: #2d8cf0;
+            }
+            .form-item{
+                margin: 18px 0px ;
+            }
+            .creat-btn{
+                margin: 30px 0px;
+            }
+            .creat-btn span
+            {
+                background-color: #2d8cf0;
+                width: auto;
+                padding: 10px 15px;
+                border-radius: 4px;
+                color: #fff;
+                cursor: pointer;
+            }
+            table{
+                position: relative;
+                width: 100%;
+                border: 1px solid #dddee1;
+            }
+
+            table th{
+                width: 25%;
+            }
+            table th,
+            table td{
+                padding: 12px 15px;
+                box-sizing: border-box;
+                text-align: left;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+                border-bottom: 1px solid #e9eaec;
+            }
+            table tr:last-child > td{
+                border-bottom: 0px;
+            }
+            table tbody tr:nth-child(even){
+                background-color: #F5F5F5;
+            }
+            .delete-btn{
+                background-color: #ed3f14;
+                width: auto;
+                padding: 8px 10px;
+                border-radius: 4px;
+                color: #fff;
+                cursor: pointer;
+            }
+        </style>
         <script src="../../vue.js"></script>
     </head>
     <body>
-    
+        <div id="app">
+            <div class="form-item">
+                <label>姓名:</label>
+                <input type="text" v-model="base.name">
+            </div>
+            <div class="form-item">
+                <label>年龄:</label>
+                <input type="text" v-model="base.age">
+            </div>
+            <div class="form-item">
+                <label>性别:</label>
+                <input type="radio" name="sex" value="男" v-model="base.sex">男
+                <input type="radio" name="sex" value="女" v-model="base.sex">女
+            </div>
+            <div class="creat-btn" @click="handleCreat">
+                <span>新增</span>
+            </div>
+            <table cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(person, index) in people">
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.sex }}</td>
+                        <td>{{ person.age }}</td>
+                        <td><span class="delete-btn" @click="handleDelete(index)">删除</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+            new Vue({
+                el: "#app",
+                data: {
+                    base: {
+                        name: "",
+                        age: "",
+                        sex: "男"
+                    },
+                    people: []
+                },
+                methods: {
+                  handleCreat: function(){
+                      var vm = this;
+                      if(!vm.base.name){
+                          alert("请输入姓名");
+                          return;
+                      }
+                      if(!vm.base.age){
+                          alert("请输入年龄");
+                          return;
+                      }
+                      if(!vm.base.sex){
+                          alert("请选择性别");
+                          return;
+                      }
+                      vm.people.push({
+                          name: vm.base.name,
+                          age: vm.base.age,
+                          sex: vm.base.sex
+                      });
+                      vm.base = {
+                          name: "",
+                          age: "",
+                          sex: "男"
+                      };
+                  },
+                  handleDelete: function(index){
+                      this.people.splice(index, 1);
+                  }
+                }
+            })
+        </script>
     </body>
 </html>
