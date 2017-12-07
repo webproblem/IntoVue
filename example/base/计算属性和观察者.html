@@ -28,5 +28,73 @@
                 }
             })
         </script>
+
+        <!-- watch监听 -->
+        <div id="app2" class="demo">
+            <input type="number" v-model="value1">
+            +
+            <input type="number" v-model="value2">
+            = {{result}}
+        </div>
+        <script type="text/javascript">
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    value1: 0,
+                    value2: 0,
+                    result: 0
+                },
+                watch: {
+                    value1: function (val) {
+                        this.result = parseInt(val) + parseInt(this.value2);
+                    },
+                    value2: function (val) {
+                        this.result = parseInt(this.value1) + parseInt(val);
+                    }
+                }
+            })
+        </script>
+
+        <div id="shopHeader">
+            用户头像：<img :src="userImg" alt="用户头像" style="width: 50px;height: 50px;"/>
+            <span>用户姓名：{{ userName }}</span>
+        </div>
+        <script type="text/javascript">
+            var headerVm = new Vue({
+                el: "#shopHeader",
+                data: {
+                    userImg: "",
+                    userName: "",
+                    userData: {}, //后台接口返回的用户信息
+                },
+                watch: {
+                    userData() {
+                        this.userImg = this.userData.image;
+                        this.userName = this.userData.name;
+                    }
+                },
+                mounted() {
+                    var vm = this;
+                    vm.getUserData(true).then((data) => {
+                        vm.userData = data;
+                    });
+                },
+                methods: {
+                  getUserData(ready) {
+                      return new Promise((resolve, reject) => {
+                          if (ready) {
+                                const data = {
+                                    image: "../assets/image/q.jpeg",
+                                    name: "秦时明月"
+                                };
+                                resolve(data);
+                            } else {
+                                reject("filed");
+                            }
+                      })
+                  }
+                }
+            })
+        </script>
     </body>
 </html>

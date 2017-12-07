@@ -204,9 +204,38 @@ v-if和v-show指令其实都是用来操作元素的，作用都是相同的，�
     })
 </script>
 ```
-当你修改两个输入框的值后，计算属性会动态的得到两个输入框拼接起来的值。    
+计算属性都是包裹在computed对象中的，Vue实例化之后，计算属性会被当做Vue实例的属性。当你修改两个输入框的值后，计算属性会动态的得到两个输入框拼接起来的值。计算属性的值必须return返回。    
 
-Vue使用`watvh`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。
+Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。watch是一个对象，里面包含了要监听的数据，监听的数据是个函数，接受两个参数：当前值和旧值。可能你会发现，上面的例子中，用watch监听也能实现，你可能会这样去实现：
+```
+<div id="app2" class="demo">
+    <input type="number" v-model="value1">
+    +
+    <input type="number" v-model="value2">
+    = {{result}}
+</div>
+<script type="text/javascript">
+    var app2 = new Vue({
+        el: "#app2",
+        data: {
+            value1: 0,
+            value2: 0,
+            result: 0
+        },
+        watch: {
+            value1: function (val) {
+                this.result = parseInt(val) + parseInt(this.value2);
+            },
+            value2: function (val) {
+                this.result = parseInt(this.value1) + parseInt(val);
+            }
+        }
+    })
+</script>
+```
+虽然这样也是能够实现效果的，但是明显没有计算属性更方便简洁，所以应该在适当的场景下使用watch监听，比如异步处理或者开销较大的操作的时候。  
+想象一下，假设有这样的一个场景，当你在做一个商城的顶部导航栏的时候，有个位置是放置用户头像和昵称的，而头像和昵称都是通过后台接口返回的数据，这个时候就可使用watch监听了。
+
 
 
 
