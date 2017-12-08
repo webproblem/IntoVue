@@ -55,44 +55,74 @@
             })
         </script>
 
-        <div id="shopHeader">
-            用户头像：<img :src="userImg" alt="用户头像" style="width: 50px;height: 50px;"/>
-            <span>用户姓名：{{ userName }}</span>
+        <!-- 深度watcher -->
+        <div id="app3">
+            名称： {{ user.name }}，
+            年龄： {{ user.age }}，
+            作者： {{ user.author }}
         </div>
         <script type="text/javascript">
-            var headerVm = new Vue({
-                el: "#shopHeader",
+            var app3 = new Vue({
+                el: "#app3",
                 data: {
-                    userImg: "",
-                    userName: "",
-                    userData: {}, //后台接口返回的用户信息
-                },
-                watch: {
-                    userData() {
-                        this.userImg = this.userData.image;
-                        this.userName = this.userData.name;
+                    user: {
+                        name: "秦时明月",
+                        age: 10,
+                        author: "玄机科技"
                     }
                 },
-                mounted() {
-                    var vm = this;
-                    vm.getUserData(true).then((data) => {
-                        vm.userData = data;
-                    });
+                watch: {
+                    user: {
+                        handler: function(val, oldVal){
+                            alert("监听到了user对象数据的变化了");
+                        },
+                        deep: true
+                    }
+                }
+            })
+            app3.user.name = "秦时明月"; //设置的值一样，不会执行监听
+            app3.user.age = 30; //可以监听到数据变化
+        </script>
+
+        <div id="shop-search" class="demo">
+            <input type="text" v-model="searchKey" placeholder="请输入任意关键字">
+            <ul>
+                <li v-for="item in resultData">{{ item }}</li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            var shopSearch = new Vue({
+                el: "#shop-search",
+                data: {
+                    //搜索关键字
+                    searchKey: "",
+                    //搜索结果
+                    resultData: []
+                },
+                watch: {
+                    searchKey: function() {
+                        const vm = this;
+                        vm.getResultData(true).then((data) => {
+                            vm.resultData = data;
+                        })
+                    }
                 },
                 methods: {
-                  getUserData(ready) {
-                      return new Promise((resolve, reject) => {
-                          if (ready) {
-                                const data = {
-                                    image: "../assets/image/q.jpeg",
-                                    name: "秦时明月"
-                                };
+                    getResultData: function(ready) {
+                        const vm = this;
+                        return new Promise((resolve, reject) => {
+                            if (ready) {
+                                const data = [
+                                    vm.searchKey,
+                                    vm.searchKey + vm.searchKey,
+                                    vm.searchKey + vm.searchKey + vm.searchKey
+                                ];
                                 resolve(data);
-                            } else {
+                                } else {
                                 reject("filed");
                             }
-                      })
-                  }
+                        })
+                    }
                 }
             })
         </script>

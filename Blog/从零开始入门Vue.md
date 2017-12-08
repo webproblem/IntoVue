@@ -206,7 +206,7 @@ v-if和v-show指令其实都是用来操作元素的，作用都是相同的，�
 ```
 计算属性都是包裹在computed对象中的，Vue实例化之后，计算属性会被当做Vue实例的属性。当你修改两个输入框的值后，计算属性会动态的得到两个输入框拼接起来的值。计算属性的值必须return返回。    
 
-Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。watch是一个对象，里面包含了要监听的数据，监听的数据是个函数，接受两个参数：当前值和旧值。可能你会发现，上面的例子中，用watch监听也能实现，你可能会这样去实现：
+Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。watch是一个对象，里面包含了要监听的数据。可能你会发现，上面的例子中，用watch监听也能实现，你可能会这样去实现：
 ```
 <div id="app2" class="demo">
     <input type="number" v-model="value1">
@@ -233,8 +233,120 @@ Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有�
     })
 </script>
 ```
-虽然这样也是能够实现效果的，但是明显没有计算属性更方便简洁，所以应该在适当的场景下使用watch监听，比如异步处理或者开销较大的操作的时候。  
-想象一下，假设有这样的一个场景，当你在做一个商城的顶部导航栏的时候，有个位置是放置用户头像和昵称的，而头像和昵称都是通过后台接口返回的数据，这个时候就可使用watch监听了。
+虽然这样也是能够实现效果的，但是明显没有计算属性更方便简洁，所以应该在适当的场景下使用watch监听，比如数据变动时执行异步处理或者开销较大的操作的时候。  
+想象一下，假设有这样的一个场景，当你在做一个商城的搜索栏的时候，你需要根据用户输入的内容实时的查询出相关的产品数据，这个时候就可以使用watch监听了。
+```
+<div id="shop-search" class="demo">
+    <input type="text" v-model="searchKey" placeholder="请输入任意关键字">
+    <ul>
+        <li v-for="item in resultData">{{ item }}</li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var shopSearch = new Vue({
+        el: "#shop-search",
+        data: {
+            //搜索关键字
+            searchKey: "",
+            //搜索结果
+            resultData: []
+        },
+        watch: {
+            searchKey: function() {
+                const vm = this;
+                vm.getResultData(true).then((data) => {
+                    vm.resultData = data;
+                })
+            }
+        },
+        methods: {
+            getResultData: function(ready) {
+                const vm = this;
+                return new Promise((resolve, reject) => {
+                    if (ready) {
+                        const data = [
+                            vm.searchKey,
+                            vm.searchKey + vm.searchKey,
+                            vm.searchKey + vm.searchKey + vm.searchKey
+                        ];
+                        resolve(data);
+                        } else {
+                        reject("filed");
+                    }
+                })
+            }
+        }
+    })
+</script>
+```
+这个案例忽略了函数防抖处理。
+好了，watch的基本使用就是这样。可能你会发现，watch只是监听了单个数据值，如果要监听的是一个数据对象，又应该怎么去监听值的变化？答案是，使用watch的深度监听。
+```
+<div id="app3">
+    名称： {{ user.name }}，
+    年龄： {{ user.age }}，
+    作者： {{ user.author }}
+</div>
+<script type="text/javascript">
+    var app3 = new Vue({
+        el: "#app3",
+        data: {
+            user: {
+                name: "秦时明月",
+                age: 10,
+                author: "玄机科技"
+            }
+        },
+        watch: {
+            user: {
+                handler: function(val, oldVal){
+                    alert("监听到了user对象数据的变化了");
+                },
+                deep: true
+            }
+        }
+    })
+    app3.user.name = "秦时明月"; //设置的值一样，不会执行监听
+    app3.user.age = 30; //可以监听到数据变化
+</script>
+```
+使用深度watcher可以监听到对象数据的变动，但是如果要监听对象数据某个具体属性的变化呢，比如就是想要监听user.author的值的变化，该如何监听。    
+简单粗暴型：
+```
+var app3 = new Vue({
+    el: "#app3",
+    data: {
+        user: {
+            name: "秦时明月",
+            age: 10,
+            author: "玄机科技"
+        }
+    },
+    watch: {
+        "user.author": function(val, oldVal){
+            alert("监听到了user.author值的变化了");
+        }
+    }
+})
+```
+或者可以使用$watch实例监听。
+```
+var app3 = new Vue({
+    el: "#app3",
+    data: {
+        user: {
+            name: "秦时明月",
+            age: 10,
+            author: "玄机科技"
+        }
+    }
+})
+app3.$watch("user.author", function(val, oldVal){
+    alert("监听到了user.author值的变化了!");
+})
+```
+好了，监听对象数据时可以了，那要是监听数组数据呢，又要怎么写。
+
 
 
 
