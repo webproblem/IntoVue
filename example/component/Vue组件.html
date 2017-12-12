@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vue组件</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <style>
+            .vut-button{
+                background-color: #2d8cf0;
+                border-radius: 4px;
+                padding: 6px 10px;
+                display: inline-block;
+                color: #fff;
+                cursor: pointer;
+                user-select: none;
+            }
+        </style>
+        <script src="../../vue.js"></script>
+    </head>
+    <body>
+        <!-- 全局组件 -->
+        <div id="app" class="demo">
+            <!-- Vue组件 -->
+            <simple-component></simple-component>
+        </div>
+        <script>
+            Vue.component("simple-component", {
+                template: "<span>我是一个最简单的全局Vue组件示例</span>"
+            })
+            new Vue({
+                el: "#app"
+            })
+        </script>
+
+        <!--局部组件-->
+        <div id="app-local" class="demo">
+            <!-- Vue组件 -->
+            <simple-component></simple-component>
+        </div>
+        <script>
+            new Vue({
+                el: "#app-local",
+                components: {
+                    "simple-component": {
+                        template: "<span>我是一个最简单的局部Vue组件示例</span>"
+                    }
+                }
+            })
+        </script>
+
+        <div id="app2" class="demo">
+            <vut-button></vut-button>
+        </div>
+        <script type="x-template" id="vComponent">
+            <div class="vut-button">
+                <span>我是Button组件</span>
+            </div>
+        </script>
+
+        <script>
+            Vue.component("vut-button", {
+                template: "#vComponent"
+            })
+            new Vue({
+                el: "#app2"
+            })
+        </script>
+    </body>
+</html>
