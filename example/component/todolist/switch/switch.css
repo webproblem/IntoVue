@@ -1,0 +1,76 @@
+.vut-switch-wrap{
+    position: relative;
+    width: auto;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 14px;
+}
+.vut-switch{
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all .3s ease-in-out;
+}
+.vut-switch:after{
+    content: "";
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: all .3s ease-in-out;
+}
+.vut-switch-checked{
+    background-color: #2d8cf0;
+
+}
+.vut-switch-checked:after{
+    left: 28px;
+}
+.vut-switch-disabled{
+    cursor: not-allowed;
+    background: #f3f3f3;
+}
+.vut-switch-disabled:after{
+    background-color: #ccc;
+}
+.vut-switch-outer{
+    position: relative;
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    vertical-align: middle;
+}
+.vut-switch-outer > *{
+    line-height: 1;
+    display: inline-block;
+}
+
+/*小尺寸*/
+.vut-switch-small{
+    width: 40px;
+    height: 20px;
+}
+.vut-switch-small:after{
+    width: 16px;
+    height: 16px;
+}
+.vut-switch-small.vut-switch-checked:after{
+    left: 22px;
+}
+
+/*大尺寸*/
+.vut-switch-large{
+    width: 60px;
+}
+.vut-switch-large.vut-switch-checked:after{
+    left: 38px;
+}
