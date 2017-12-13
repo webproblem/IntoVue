@@ -246,7 +246,10 @@ Vue.component("vut-switch",{
         },
         switchClass: function(){
             return [
-                prefixClass
+                prefixClass,
+                {
+                    [prefixClass + "-checked"]: this.currentValue
+                }
             ];
         }
     }
@@ -265,3 +268,45 @@ props: {
 }
 ```
 然后就通过不同的样式来控制渲染出来的Switch组件。我们根据传入的不同尺寸的值来添加不同的Class值，制定不同的样式，所以switchClass计算属性中可这么写：
+```javascript
+switchClass: function(){
+    return [
+        prefixClass,
+        {
+            [prefixClass + "-checked"]: this.currentValue,
+            [prefixClass +"-"+ this.size]: this.size
+        }
+    ];
+}
+```
+然后就是添加对应的样式。
+```css
+/*小尺寸*/
+.vut-switch-small{
+    width: 40px;
+    height: 20px;
+}
+.vut-switch-small:after{
+    width: 16px;
+    height: 16px;
+}
+.vut-switch-small.vut-switch-checked:after{
+    left: 22px;
+}
+
+/*大尺寸*/
+.vut-switch-large{
+    width: 60px;
+}
+.vut-switch-large.vut-switch-checked:after{
+    left: 38px;
+}
+```
+
+最后我们就在Vue组件实例模板中使用Switch组件
+```html
+<vut-switch size="small"></vut-switch>
+<vut-switch size="large"></vut-switch>
+```
+
+效果如下：
