@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>props传递数据</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <style>
+            .i-comment-area{
+                width: 300px;
+                position: relative;
+                display: inline-block;
+                font-size: 14px;
+            }
+            .i-comment-area .i-textarea{
+                width: 100%;
+                height: auto;
+                vertical-align: bottom;
+                line-height: 1.5;
+                padding: 4px 7px;
+                border: 1px solid #dddee1;
+                border-radius: 4px;
+                color: #495060;
+                background-color: #fff;
+            }
+            .i-comment-area .i-textarea:focus{
+                box-shadow: none;
+                outline: 0;
+                border-color: #2d8cf0;
+            }
+            .i-comment-submit{
+                background-color: #2d8cf0;
+                border-radius: 4px;
+                padding: 6px 10px;
+                display: inline-block;
+                color: #fff;
+                cursor: pointer;
+                user-select: none;
+                margin-top: 10px;
+            }
+            #simple-comment{
+                width: 500px;
+            }
+            #simple-comment .title{
+                display: block;
+                font-weight: bolder;
+                font-size: 18px;
+                margin-top: 15px;
+                padding: 7px 0px;
+                border-bottom: 1px solid #ccc;
+            }
+            .comment-list li{
+                padding: 10px 0px;
+                border-bottom: 1px solid #ccc;
+            }
+            .comment-list li span{
+                display: block;
+                padding: 10px 0px;
+            }
+        </style>
+        <script src="../../vue.js"></script>
+    </head>
+    <body>
+        <div id="app" class="demo">
+            <simple-component link="https://github.com/vuejs/vue"></simple-component>
+        </div>
+        <script>
+            Vue.component("simple-component", {
+                template: "<span>Vue的github地址是：{{ link }}</span>",
+                props: ["link"]
+            })
+            new Vue({
+                el: "#app"
+            })
+        </script>
+
+        <!-- 动态传递数据 -->
+        <template id="userComponent">
+            <div>
+                <p>用户名：{{ userName }}</p>
+                <p>性别：{{ sex }}</p>
+                <p>年龄：{{ age }}</p>
+            </div>
+        </template>
+        <script type="text/javascript">
+            Vue.component("user-component", {
+                template: "#userComponent",
+                props: ["userName", "sex", "age"]
+            })
+        </script>
+        <div id="app2" class="demo">
+            <div>
+                <input type="text" v-model="userName" placeholder="请输入用户名">
+                <input type="text" v-model="sex" placeholder="请输入性别">
+                <input type="text" v-model="age" placeholder="请输年龄">
+            </div>
+            <user-component
+            :user-name="userName"
+            :sex="sex"
+            :age="age"
+            >
+            </user-component>
+        </div>
+        <script type="text/javascript">
+            new Vue({
+                el: "#app2",
+                data: {
+                    userName: "",
+                    sex: "",
+                    age: ""
+                }
+            })
+        </script>
+
+        <!-- 简单的评论系统 -->
+        <template id="comment-component">
+            <div class="i-comment-area">
+                <textarea rows="5" class="i-textarea" placeholder="请输入内容" v-model="commentValue"></textarea>
+                <div class="i-comment-submit" @click="handleSubmit">
+                    <span>提交</span>
+                </div>
+            </div>
+        </template>
+        <script>
+            Vue.component("i-comment", {
+                template: "#comment-component",
+                data: function(){
+                    return {
+                        commentValue: ""
+                    }
+                },
+                methods: {
+                  handleSubmit: function(){
+                      if(this.commentValue.length < 1){
+                          alert("评论不能为空");
+                          return;
+                      }
+                      this.$emit("content", this.commentValue);
+                      this.commentValue = "";
+                  }
+                }
+            })
+        </script>
+
+        <div id="simple-comment" class="demo">
+            <i-comment v-on:content="commentData"></i-comment>
+            <label class="title">评论列表</label>
+            <ul class="comment-list">
+                <li v-for="(item,index) in commentList">
+                    <span>{{ item.time }}</span>
+                    <span>{{ item.content }}</span>
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            var commentVm = new Vue({
+                el: "#simple-comment",
+                data: {
+                    commentList: []
+                },
+                methods: {
+                  commentData: function(data){
+                      // alert("内容："+data);
+                      this.commentList.push({
+                          time: new Date().toLocaleString(),
+                          content: data
+                      });
+                  }
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -3,9 +3,15 @@
     margin: 0;
 }
 .demo{
-    margin: 15px;
+    margin: 30px 20px;
 }
+
 
 ul,li{
     list-style: none;
+}
+input:focus,textarea:focus{
+    box-shadow: none;
+    outline: 0;
+    border-color: #2d8cf0;
 }
