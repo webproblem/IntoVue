@@ -3,7 +3,7 @@
 > ## **Hello World示例**
 首先通过Hello World示例来初步了解Vuejs。可以查看[Demo页面](../example/base/HelloWorld.html)。
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,7 +30,7 @@
 ```
 
 可以看到，需要先通过new Vue()来创建一个Vue实例，然后通过挂载容器来实现响应式数据绑定。挂载容器中的文本值是的形式是双大括号，这种写法是Vue的模板语法。在某些场景下，需要通过`v-html`指令来数据绑定。比如数据值中包含html标签:
-```
+```html
 <!--Vue挂载的容器-->
 <div id="app2" v-html="message"></div>
 
@@ -47,7 +47,7 @@
 > 可能你已经注意到了，在v-html指令中使用message时没有了双括号了，这就是Vue模板语法的写法形式，只有当是文本插值的时候，才会使用双括号进行包裹，其他情况下不需要使用。
 
 在Vue模板语法中，还可以使用javscript表达式来绑定值。
-```
+```html
 <div id="app3">
     我有{{ total }}个苹果，今天吃掉了{{ used }}个，还剩{{ total - used }}个苹果。
 </div>
@@ -67,7 +67,7 @@
 
 ## **v-text**
 其实就是文本插值。看一个例子:
-```
+```html
 <div id="app" v-text="message"></div>
 <!--等同于下面的写法
 <div id="app">{{ message }}</div>
@@ -88,7 +88,7 @@ v-html指令就是将值作为普通html插入。用法如前面的那样。
 
 ## **v-model**
 将值进行双向数据绑定。看例子:
-```
+```html
 <div id="app2">
     <input v-model="message">
     <span>{{ message }}</span>
@@ -106,7 +106,7 @@ v-model双向数据绑定，是Vue的本质所在。我们可以通过v-model来
 
 ## **v-on**
 Vue事件指令，主要是用来绑定监听事件的。看例子：
-```
+```html
 <div id="app3" class="demo">
     <button v-on:click="handleClick">点击我</button>
 </div>
@@ -122,14 +122,14 @@ Vue事件指令，主要是用来绑定监听事件的。看例子：
 </script>
 ```
 可以看到，通过v-on给button元素绑定了一个click事件`handleClick`（也可以用缩写的方式 `@click="handleClick"`），handleClick是Vue实例的一个方法，可能你已经注意到了，Vue实例的方法都是包裹在`methods`键中。你也可以通过Vue实例来访问绑定的事件方法。
-```
+```javascript
 app3.handleClick();
 ```
 详细的解说可以参考具体的API文档，[Vue事件处理](https://cn.vuejs.org/v2/guide/events.html)。
 
 ## **v-bind**
 用于动态绑定html属性或者是组件的props值。看例子：
-```
+```html
 <div id="app4" v-bind:class="className + ' demo'">我是v-bind指令</div>
 <script>
     var app4 = new Vue({
@@ -144,7 +144,7 @@ v-bind指令也有缩写，可以用这样的写法：`:class="className + ' dem
 
 ## **v-for**
 动态循环数据，作用和javascript的for循环一样，但也有不同之处。看例子：
-```
+```html
 <div id="app5" class="demo">
 <div>
     <h2>武林外传中的人物表：</h2>
@@ -184,7 +184,7 @@ v-if和v-show指令其实都是用来操作元素的，作用都是相同的，�
 
 > ## **Vue计算属性和观察者**
 计算属性的设计其实就是为了让模板更加的简洁。当模板内的表达式语法太复杂或者在模板中需要多次使用某个表达式，就会造成模板复杂化，所以在某些场景下，就可以使用到计算属性的操作了。看例子:
-```
+```html
 <div id="app" class="demo">
     <input type="number" v-model="value1">
     +
@@ -209,7 +209,7 @@ v-if和v-show指令其实都是用来操作元素的，作用都是相同的，�
 计算属性都是包裹在computed对象中的，Vue实例化之后，计算属性会被当做Vue实例的属性。例子中，当你修改两个输入框的值后，计算属性会动态的得到两个输入框拼接起来的值。计算属性的值必须return返回。    
 
 Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有时候我们需要通过监听某些数据的变化来达到目的。watch是一个对象，里面包含了要监听的数据。可能你会发现，上面的例子中，用watch监听也能实现，你可能会这样去实现：
-```
+```html
 <div id="app2" class="demo">
     <input type="number" v-model="value1">
     +
@@ -237,7 +237,7 @@ Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有�
 ```
 虽然这样也是能够实现效果的，但是明显没有计算属性更方便简洁，所以应该在适当的场景下使用watch监听，比如数据变动时执行异步处理或者开销较大的操作的时候。  
 想象一下，假设有这样的一个场景，当你在做一个商城的搜索栏的时候，你需要根据用户输入的内容实时的查询出相关的产品数据，这个时候就可以使用watch监听了。
-```
+```html
 <div id="shop-search" class="demo">
     <input type="text" v-model="searchKey" placeholder="请输入任意关键字">
     <ul>
@@ -283,7 +283,7 @@ Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有�
 ```
 这个案例忽略了函数防抖处理。
 好了，watch的基本使用就是这样。可能你会发现，watch只是监听了单个数据值，如果要监听的是一个数据对象，又应该怎么去监听值的变化？答案是，使用watch的深度监听。
-```
+```html
 <div id="app3">
     名称： {{ user.name }}，
     年龄： {{ user.age }}，
@@ -314,7 +314,7 @@ Vue使用`watch`来监听数据的变化，然后可以执行某些操作，有�
 ```
 使用深度watcher可以监听到对象数据的变动，但是如果要监听对象数据某个具体属性的变化呢，比如就是想要监听user.author的值的变化，该如何监听。    
 简单粗暴型：
-```
+```javascript
 var app3 = new Vue({
     el: "#app3",
     data: {
@@ -332,7 +332,7 @@ var app3 = new Vue({
 })
 ```
 或者可以使用$watch实例监听。
-```
+```javascript
 var app3 = new Vue({
     el: "#app3",
     data: {
