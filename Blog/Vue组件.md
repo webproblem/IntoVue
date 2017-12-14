@@ -210,11 +210,11 @@ Vue.component("i-comment", {
 ## **实现一个 Switch UI 组件**
 接下来，通过实际动手来实现一个 Switch UI 组件。首先思考下Switch组件需要有哪些基本的API。      
 
-考虑到使用场景，需要制定不同尺寸的Switch组件，所以需要 `size` API。        
-考虑到会出现禁止使用的场景，需要禁止和启用组件的功能，所以需要 `disabled` API。         
-考虑到需要自定义开启和关闭时的背景颜色，所以需要 `on-color` 和 `off-color` API来自定义背景色。       
-同理，可能需要自定义开启和关闭时显示的文字，所以需要 `on-text` 和 `off-text` API来自定义显示的文字。             
-可能还会需要通过事件监听来获取当前的状态，并根据状态做一些操作，所以需要一个事件来监听状态的变化，所以需要 `on-change` API。          
+> * 考虑到使用场景，需要制定不同尺寸的Switch组件，所以需要 `size` API。        
+* 考虑到会出现禁止使用的场景，需要禁止和启用组件的功能，所以需要 `disabled` API。         
+* 考虑到需要自定义开启和关闭时的背景颜色，所以需要 `on-color` 和 `off-color` API来自定义背景色。       
+* 同理，可能需要自定义开启和关闭时显示的文字，所以需要 `on-text` 和 `off-text` API来自定义显示的文字。             
+* 可能还会需要通过事件监听来获取当前的状态，并根据状态做一些操作，所以需要一个事件来监听状态的变化，所以需要 `on-change` API。          
 
 那么基本的API都列出来了，现在就可以开始一步步实现这些功能了。首先写出组件模板的基本框架。
 ```html
@@ -264,10 +264,10 @@ props: {
         type: Boolean,
         default: false
     },
-    size: String
+    size: String //尺寸
 }
 ```
-然后就通过不同的样式来控制渲染出来的Switch组件。我们根据传入的不同尺寸的值来添加不同的Class值，制定不同的样式，所以switchClass计算属性中可这么写：
+然后我们的思路是通过不同的样式来控制渲染出来的Switch组件。我们根据传入的不同尺寸的值来添加不同的Class值，制定不同的样式，所以switchClass计算属性中可这么写：
 ```javascript
 switchClass: function(){
     return [
@@ -303,10 +303,50 @@ switchClass: function(){
 }
 ```
 
-最后我们就在Vue组件实例模板中使用Switch组件
+最后我们就在Vue实例初始化模板中使用Switch组件。
 ```html
 <vut-switch size="small"></vut-switch>
 <vut-switch size="large"></vut-switch>
 ```
 
+这样我们就可以控制显示Switch组件的尺寸了，效果如下：  
+
+![switch尺寸](../example/assets/image/q1.png)
+
+然后来看看如何实现自定义背景色的。同样也是先在子组件的props选项中定义好传递过来的数据。      
+```javascript
+props: {
+    value: {
+        type: Boolean,
+        default: false
+    },
+    size: String, //尺寸
+    onColor: String, //开启时的自定义背景色
+    ofColor: String //关闭时的自定义背景色
+}
+```
+然后我们通过当前的状态来控制显示不同的背景色，也就是要关注 `currentValue` 值。先来写一个设置背景色的函数，根据currentValue值的变化来设置背景色。
+```javascript
+setBackgroundColor: function(){
+    let customColor = this.currentValue ? this.onColor : this.offColor;
+    this.$refs.switch.style.backgroundColor = customColor;
+}
+```
+然后监听currentValue值的变化来调用这个函数。
+```javascript
+watch: {
+    currentValue: function(){
+        this.setBackgroundColor();
+    }
+}
+```
+最后我们就在Vue实例初始化模板中使用Switch组件。
+```html
+<vut-switch on-color="#13ce66" off-color="#ff4949"></vut-switch>
+```
+
 效果如下：
+
+![switch自定义背景色](../example/assets/image/q2.png)
+
+完整的例子请查看 [switch组件](../example/component/todolist/switch) 。
