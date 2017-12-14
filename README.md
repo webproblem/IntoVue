@@ -7,10 +7,28 @@ Vue.js是一套构建用户界面的渐进式框架（官方说明）。通俗�
 # 文件结构
 
 ```
-├── Blog
-├── example
-    ├── assets
-    ├── base
-    ├── component
-    ├── style
+├── Blog                               //文章系列
+├── example                            //案例系列
+    ├── assets                         //资源文件
+    ├── base                           //Vue基础内容
+    ├── component                      //Vue组件内容
+    ├── style                          //样式文件
 ```
+# 文章系列
+
+* - [x] [从零开始入门Vue](./Blog/从零开始入门Vue.md)
+
+* - [x] [Vue组件](./Blog/Vue组件.md)
+
+* - [ ] Vue自定义指令
+
+* - [ ] Vue过滤器
+
+* - [ ] Vue虚拟函数
+
+* - [ ] 了解Vue双向数据绑定原理
+
+* - [ ] Vue单文件组件
+
+# 后记
+文章有任何错误和问题，请及时指出 [issues](https://github.com/webproblem/IntoVue/issues) 。
