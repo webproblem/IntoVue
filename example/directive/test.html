@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vue自定义指令</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <script src="../../vue.js"></script>
+        <script src="../src/components/button.js"></script>
+    </head>
+    <body>
+
+        <div id="app" class="demo">
+            <vut-button v-tooltip.top="'top文字提示'">上边</vut-button>
+            <vut-button>右边</vut-button>
+            <vut-button>下边</vut-button>
+            <vut-button>左边</vut-button>
+        </div>
+
+        <script type="text/javascript">
+            Vue.directive("tooltip", {
+                inserted: function(el, binding){
+                    var div = document.createElement("div");
+                    div.className = "vut-tooltip"
+                    document.body.appendChild(div);
+                }
+            })
+
+            new Vue({
+                el: "#app"
+            })
+        </script>
+    </body>
+</html>
