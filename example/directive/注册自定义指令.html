@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>注册自定义指令</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <script src="../../vue.js"></script>
+    </head>
+    <body>
+        <div id="app" class="demo">
+            <!-- 全局注册 -->
+            <input type="text" placeholder="我是全局自定义指令" v-focus>
+
+            <!-- 局部注册 -->
+            <!--<input type="text" placeholder="我是局部自定义指令" v-focus2>-->
+        </div>
+        <script>
+            Vue.directive("focus", {
+                inserted: function(el){
+                    el.focus();
+                }
+            })
+            new Vue({
+                el: "#app",
+                directives: {
+                    focus2: {
+                        inserted: function(el){
+                            el.focus();
+                        }
+                    }
+                }
+            })
+        </script>
+
+        <!-- 简单案例 -->
+        <div id="app2" class="demo">
+
+        </div>
+        <script>
+            new Vue({
+                el: "#app2",
+                data: {
+                    imageList: [
+                        {
+                            url: ""
+                        }
+                    ]
+                }
+            })
+        </script>
+    </body>
+</html>

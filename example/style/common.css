@@ -14,7 +14,7 @@ ul,li {
 input:focus,textarea:focus {
     box-shadow: none;
     outline: 0;
-    border-color: #2d8cf0;
+    /*border-color: #2d8cf0;*/
 }
 
 .vut-button {
