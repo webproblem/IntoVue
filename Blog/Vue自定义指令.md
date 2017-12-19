@@ -73,7 +73,7 @@ Vue自定义指令和组件一样存在着全局注册和局部注册两种方�
 
 * **oldVnode**：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
-> 自定义指令也可以传递多个值,可以用javascript表达式z里面量传递，看例子：
+> 自定义指令也可以传递多个值,可以用javascript表达式字面量传递，看例子：
 
 ```html
 <div v-demo="{ color: 'white', text: 'hello!' }"></div>
@@ -119,4 +119,59 @@ Vue自定义指令和组件一样存在着全局注册和局部注册两种方�
         }
     })
 </script>
+```
+
+## 源码解读
+
+Vuetify 框架库中，有提供几种自定义指令API，包括浏览器窗口缩放 `v-resize`，浏览器滚动条滑动 `v-scroll` 等自定义指令，现在就来学习一波 Vuetify 中自定义指令源码吧。
+
+### v-resize 自定义指令
+
+在 `src/directives/resize.js` 中，是 `v-resize` 自定义指令操作。
+
+```javascript
+function inserted (el, binding) {
+    //指令的绑定值，是一个function函数
+    const callback = binding.value
+
+    //延时执行函数的毫秒数
+    const debounce = binding.arg || 200
+
+    //禁止执行与事件关联的默认动作
+    const options = binding.options || { passive: true }
+
+    let debounceTimeout = null
+    const onResize = () => {
+        clearTimeout(debounceTimeout)
+        debounceTimeout = setTimeout(callback, debounce, options)
+    }
+
+    //监听窗口缩放
+    window.addEventListener('resize', onResize, options)
+
+    //存储监听窗口缩放事件的参数，方便在unbind钩子函数中解除事件绑定的时候使用到
+    el._onResize = {
+        callback,
+        options
+    }
+
+    if (!binding.modifiers || !binding.modifiers.quiet) {
+        onResize()
+    }
+}
+
+//绑定的DOM元素被移除时触发
+function unbind (el, binding) {
+    const { callback, options } = el._onResize
+
+    window.removeEventListener('resize', callback, options)
+    delete el._onResize
+}
+
+export default {
+    //指令名称
+    name: 'resize',
+    inserted,
+    unbind
+}
 ```
