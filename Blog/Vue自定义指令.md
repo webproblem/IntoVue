@@ -26,7 +26,7 @@ Vue自定义指令和组件一样存在着全局注册和局部注册两种方�
 ```
 > 这个简单案例当中，我们通过注册一个 `v-focus` 指令，实现了在页面加载完成之后自动让输入框获取到焦点的小功能。其中 `inserted` 是自定义指令的钩子函数，后面的内容会详细讲解。        
 
-全局注册好了，那么再来看看如何注册局部自定义指令，通过在Vue实例中添加 
+全局注册好了，那么再来看看如何注册局部自定义指令，通过在Vue实例中添加
 `directives ` 对象数据注册局部自定义指令。
 
 ```html
@@ -88,4 +88,35 @@ Vue自定义指令和组件一样存在着全局注册和局部注册两种方�
 说了这么多理论知识，那么现在就来动手写一个简单的案例吧。假设这样的看一个场景：`当你在阅览某网站的图片时，可能会由于图片资源比较大而加载缓慢，需要消耗一小段时间来呈现到眼前，这个体验肯定是不太友好的（就像网站切换页面，有时候会加载资源比较慢，为了给用户较好的体验，一般都会先出一个正在加载的友好提示页面），所以这个案例的功能就是在图片资源还没加载出来时，先显示默认背景图，当图片资源真正加载出来了之后，再把真实图片放置到对应的位置上并显示出来。`
 
 ```html
+<div id="app2" class="demo">
+    <div v-for="item in imageList">
+        <img src="../assets/image/bg.png" alt="默认图" v-image="item.url">
+    </div>
+</div>
+<script>
+    Vue.directive("image", {
+        inserted: function(el, binding) {
+            //为了真实体现效果，用了延时操作
+            setTimeout(function(){
+                el.setAttribute("src", binding.value);
+            }, Math.random() * 1200)
+        }
+    })
+    new Vue({
+        el: "#app2",
+        data: {
+            imageList: [
+                {
+                    url: "http://consumer-img.huawei.com/content/dam/huawei-cbg-site/greate-china/cn/mkt/homepage/section4/home-s4-p10-plus.jpg"
+                },
+                {
+                    url: "http://consumer-img.huawei.com/content/dam/huawei-cbg-site/greate-china/cn/mkt/homepage/section4/home-s4-watch2-pro-banner.jpg"
+                },
+                {
+                    url: "http://consumer-img.huawei.com/content/dam/huawei-cbg-site/en/mkt/homepage/section4/home-s4-matebook-x.jpg"
+                }
+            ]
+        }
+    })
+</script>
 ```
