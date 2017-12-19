@@ -175,7 +175,7 @@ export default {
     unbind
 }
 ```
-可以看到，定义了 `inserted` 和 `unbind` 两个钩子函数，unbind 钩子函数是用来解除监听事件的。inserted 钩子函数中，绑定监听了窗口缩放事件，并采用简单的函数防抖来防止操作过度频繁，大致的流程就是这样子的。
+可以看到，定义了 `inserted` 和 `unbind` 两个钩子函数，unbind 钩子函数是用来解除监听事件的。inserted 钩子函数中，绑定监听了窗口缩放事件并执行回调函数，并采用简单的函数防抖来防止操作过度频繁，大致的流程就是这样子的。
 
 可能你会发现，上面的代码中，采用的都是es6标准语法写的，对于还不太熟悉es6语法的童鞋来说，可能阅读起来会比较的吃力，那么下面就转换成es5语法来完整的实现这个指令的功能，但是建议还是尽量去熟悉es6标准语法，因为这是前端发展进程中的必然趋势。
 ```javascript
@@ -209,3 +209,11 @@ Vue.directive("resize", {
     unbind: unbindFn
 })
 ```
+完整的案例可以点击这里查看：[v-resize自定义指令](https://github.com/webproblem/IntoVue/blob/master/example/directive/v-resize.html)。
+
+> Vuetify 中更多的自定义指令案例源码都可以在 github 中找到，附上 Vuetify 的 github 地址：[https://github.com/vuetifyjs/vuetify](https://github.com/vuetifyjs/vuetify)。
+
+## 总结
+
+列举的都是一些简单的Vue自定义指令的知识，在实际项目中的不同场景会存在着各种坑。       
+Vue自定义指令还可以在图片懒加载的场景下使用，`vue-lazyload` 就是有利用自定义指令实现图片懒加载的，可能的话，后面可以分析一波 `vue-lazyload` 的源码。
