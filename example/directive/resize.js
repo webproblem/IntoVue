@@ -1,5 +1,6 @@
 /**
  * github: https://github.com/vuetifyjs/vuetify/blob/dev/src/directives/resize.js
+ *
 */
 
 function inserted (el, binding) {
@@ -11,7 +12,7 @@ function inserted (el, binding) {
 
     //禁止执行与事件关联的默认动作
     const options = binding.options || { passive: true }
-    
+
     let debounceTimeout = null
     const onResize = () => {
         clearTimeout(debounceTimeout)

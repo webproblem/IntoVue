@@ -127,7 +127,7 @@ Vuetify 框架库中，有提供几种自定义指令API，包括浏览器窗口
 
 ### v-resize 自定义指令
 
-在 `src/directives/resize.js` 中，是 `v-resize` 自定义指令操作。
+在 `src/directives/resize.js` 中，是 `v-resize` 自定义指令操作的核心代码。
 
 ```javascript
 function inserted (el, binding) {
@@ -174,4 +174,38 @@ export default {
     inserted,
     unbind
 }
+```
+可以看到，定义了 `inserted` 和 `unbind` 两个钩子函数，unbind 钩子函数是用来解除监听事件的。inserted 钩子函数中，绑定监听了窗口缩放事件，并采用简单的函数防抖来防止操作过度频繁，大致的流程就是这样子的。
+
+可能你会发现，上面的代码中，采用的都是es6标准语法写的，对于还不太熟悉es6语法的童鞋来说，可能阅读起来会比较的吃力，那么下面就转换成es5语法来完整的实现这个指令的功能，但是建议还是尽量去熟悉es6标准语法，因为这是前端发展进程中的必然趋势。
+```javascript
+function insertedFn (el, binding) {
+    var callback = binding.value;
+    var debounce = 200;
+    var options = {passive: true};
+    var debounceTimeout = null;
+    var onResize = function () {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(callback, debounce, options);
+    }
+
+    window.addEventListener("resize", onResize, options);
+
+    el._onResize = {
+        callback: callback,
+        options: options
+    };
+}
+
+function unbindFn (el, binding) {
+    var callback = el._onResize.callback;
+    var options = el._onResize.options;
+    window.removeEventListener("resize", callback, options);
+    delete el._onResize;
+}
+
+Vue.directive("resize", {
+    inserted: insertedFn,
+    unbind: unbindFn
+})
 ```

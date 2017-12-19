@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>注册自定义指令</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/common.css">
+        <script src="../../vue.js"></script>
+    </head>
+    <body>
+        <div id="app" class="demo" v-resize="getSize">
+            浏览器窗口宽：{{windowSize.x}}，浏览器窗口高：{{windowSize.y}}
+        </div>
+
+        <script type="text/javascript">
+            function insertedFn (el, binding) {
+                var callback = binding.value;
+                var debounce = 200;
+                var options = {passive: true};
+                var debounceTimeout = null;
+                var onResize = function () {
+                    clearTimeout(debounceTimeout);
+                    debounceTimeout = setTimeout(callback, debounce, options);
+                }
+
+                window.addEventListener("resize", onResize, options);
+
+                el._onResize = {
+                    callback: callback,
+                    options: options
+                };
+            }
+
+            function unbindFn (el, binding) {
+                var callback = el._onResize.callback;
+                var options = el._onResize.options;
+                window.removeEventListener("resize", callback, options);
+                delete el._onResize;
+            }
+
+            Vue.directive("resize", {
+                inserted: insertedFn,
+                unbind: unbindFn
+            })
+        </script>
+
+        <script type="text/javascript">
+            new Vue({
+                el: "#app",
+                data: {
+                    windowSize: {
+                        x: 0,
+                        y: 0
+                    }
+                },
+                mounted: function() {
+                    this.getSize();
+                },
+                methods: {
+                    getSize: function() {
+                        this.windowSize = {
+                            x: window.innerWidth,
+                            y: window.innerHeight
+                        };
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
